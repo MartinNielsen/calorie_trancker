@@ -5,8 +5,6 @@ const URLS_TO_CACHE = [
     '/style.css',
     '/script.js',
     '/manifest.json',
-    '/icon.png',
-    '/favicon.ico'
 ];
 
 self.addEventListener('install', (event) => {
