@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function parseTextWithGemini(text) {
-        const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${geminiApiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro-latest:generateContent?key=${geminiApiKey}`;
         const prompt = `Extract the food name and weight in grams from the following text: "${text}". Respond with a JSON object like {"food": "...", "weight": ...}. If you cannot determine the food or weight, respond with {"error": "Could not parse"}.`;
 
         try {
