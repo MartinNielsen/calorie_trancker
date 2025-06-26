@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="api-key-modal" class="modal">
+        <div class="modal-content">
+            <h2>Enter Gemini API Key</h2>
+            <input type="password" id="api-key-input" placeholder="Your API Key">
+            <button id="save-api-key">Save</button>
+        </div>
+    </div>
+
+    <div id="app-container">
+        <header>
+            <h1>Today's Calories</h1>
+            <div id="total-calories">0</div>
+        </header>
+
+        <main>
+            <ul id="food-list"></ul>
+        </main>
+
+        <footer>
+            <button id="talk-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+            </button>
+        </footer>
+    </div>
+
+    <div id="new-food-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="new-food-name"></h2>
+            <p>This is a new food. Please enter the calories per 100g.</p>
+            <input type="number" id="new-food-calories" placeholder="Calories per 100g">
+            <button id="save-new-food">Save</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
