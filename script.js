@@ -219,33 +219,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     saveApiKeyButton.addEventListener('click', saveApiKey);
 
-    """    checkApiKey();
+    checkApiKey();
     renderDailyLog();
-
-    if ('serviceWorker' in navigator) {
-        let newWorker;
-        navigator.serviceWorker.register('/sw.js').then(reg => {
-            reg.addEventListener('updatefound', () => {
-                newWorker = reg.installing;
-                newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                        const updateNotice = document.createElement('div');
-                        updateNotice.className = 'update-notice';
-                        updateNotice.innerHTML = 'A new version is available! <button id="reload-button">Reload</button>';
-                        document.body.appendChild(updateNotice);
-                        document.getElementById('reload-button').addEventListener('click', () => {
-                            newWorker.postMessage({ type: 'SKIP_WAITING' });
-                        });
-                    }
-                });
-            });
-        });
-
-        let refreshing;
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (refreshing) return;
-            window.location.reload();
-            refreshing = true;
-        });
-    }
-});""
+});
