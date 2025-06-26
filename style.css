@@ -158,4 +158,35 @@ footer {
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
+    margin-top: 10px; /* Added margin */
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.input-group input {
+    flex-grow: 1;
+    margin: 0;
+}
+
+.mic-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 0;
+}
+
+.mic-button.recording {
+    background-color: var(--danger-color);
 }
