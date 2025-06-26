@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const newFoodNameDisplay = document.getElementById('new-food-name');
     const newFoodCaloriesInput = document.getElementById('new-food-calories');
     const saveNewFoodButton = document.getElementById('save-new-food');
+    const cancelNewFoodButton = document.getElementById('cancel-new-food');
 
     let currentVoiceHandler = null;
 
@@ -140,6 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 alert('Please enter a valid calorie amount.');
             }
+        };
+
+        cancelNewFoodButton.onclick = () => {
+            newFoodModal.classList.remove('active');
+            newFoodCaloriesInput.value = '';
+            newFoodNameDisplay.textContent = '';
         };
     }
 
