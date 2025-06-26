@@ -90,12 +90,7 @@ main {
     font-size: 1.2em;
 }
 
-footer {
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 
 #talk-button {
     background-color: var(--primary-color);
@@ -110,6 +105,11 @@ footer {
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     transition: background-color 0.3s, transform 0.2s;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001;
 }
 
 #talk-button.recording {
@@ -170,28 +170,4 @@ footer {
 .input-group input {
     flex-grow: 1;
     margin: 0;
-}
-
-.mic-button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    margin-left: 10px;
-    padding: 0;
-}
-
-.mic-button svg {
-    width: 24px;
-    height: 24px;
-}
-
-.mic-button.recording {
-    background-color: var(--danger-color);
 }

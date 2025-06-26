@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const newFoodCaloriesInput = document.getElementById('new-food-calories');
     const saveNewFoodButton = document.getElementById('save-new-food');
 
-    const calorieTalkButton = document.getElementById('calorie-talk-button');
     let currentVoiceHandler = null;
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -182,8 +181,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    talkButton.addEventListener('click', () => startVoiceRecognition(handleFoodVoiceResult, talkButton));
-    calorieTalkButton.addEventListener('click', () => startVoiceRecognition(handleCalorieVoiceResult, calorieTalkButton));
+    talkButton.addEventListener('click', () => {
+        if (newFoodModal.classList.contains('active')) {
+            startVoiceRecognition(handleCalorieVoiceResult, talkButton);
+        } else {
+            startVoiceRecognition(handleFoodVoiceResult, talkButton);
+        }
+    });
 
     if (SpeechRecognition) {
         recognition.onstart = () => {
