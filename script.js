@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const newFoodCaloriesInput = document.getElementById('new-food-calories');
     const saveNewFoodButton = document.getElementById('save-new-food');
 
+    let deferredPrompt;
+    const installButton = document.getElementById('install-button');
+
     const calorieTalkButton = document.getElementById('calorie-talk-button');
     let currentVoiceHandler = null;
 
@@ -219,7 +222,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     saveApiKeyButton.addEventListener('click', saveApiKey);
 
-    """    checkApiKey();
+    """        window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installButton.style.display = 'block';
+    });
+
+    installButton.addEventListener('click', () => {
+        installButton.style.display = 'none';
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the A2HS prompt');
+            } else {
+                console.log('User dismissed the A2HS prompt');
+            }
+            deferredPrompt = null;
+        });
+    });
+
+    checkApiKey();
     renderDailyLog();
 
     if ('serviceWorker' in navigator) {
