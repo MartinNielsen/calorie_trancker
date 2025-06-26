@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const newFoodCaloriesInput = document.getElementById('new-food-calories');
     const saveNewFoodButton = document.getElementById('save-new-food');
 
+    const calorieTalkButton = document.getElementById('calorie-talk-button');
+    let currentVoiceHandler = null;
+
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition;
     if (SpeechRecognition) {
@@ -48,9 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function parseTextWithGemini(text) {
+    async function parseTextWithGemini(text, prompt) {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${geminiApiKey}`;
-        const prompt = `Extract the food name and weight in grams from the following text: "${text}". Respond with a JSON object like {"food": "...", "weight": ...}. If you cannot determine the food or weight, respond with {"error": "Could not parse"}.`;
 
         try {
             const response = await fetch(url, {
@@ -59,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }]
+                    contents: [{ parts: [{ text: prompt.replace('${text}', text) }] }]
                 }),
             });
 
@@ -89,8 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
         renderDailyLog();
     }
 
-    function handleVoiceResult(text) {
-        parseTextWithGemini(text).then(result => {
+    function handleFoodVoiceResult(text) {
+        const prompt = `Extract the food name and weight in grams from the following text: "${text}". Respond with a JSON object like {"food": "...", "weight": ...}. If you cannot determine the food or weight, respond with {"error": "Could not parse"}.`;
+        parseTextWithGemini(text, prompt).then(result => {
             if (result.error || !result.food || !result.weight) {
                 alert("Sorry, I couldn't understand the food and weight.");
                 return;
@@ -106,6 +109,17 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 promptForNewFood(result.food, weight);
             }
+        });
+    }
+
+    function handleCalorieVoiceResult(text) {
+        const prompt = `Extract the calorie amount from the following text: "${text}". Respond with a JSON object like {"calories": ...}. If you cannot determine the number, respond with {"error": "Could not parse"}.`;
+        parseTextWithGemini(text, prompt).then(result => {
+            if (result.error || !result.calories) {
+                alert("Sorry, I couldn't understand the calorie amount.");
+                return;
+            }
+            newFoodCaloriesInput.value = result.calories;
         });
     }
     
@@ -155,30 +169,39 @@ document.addEventListener('DOMContentLoaded', () => {
         totalCaloriesDisplay.textContent = totalCalories;
     }
 
-    talkButton.addEventListener('click', () => {
+    function startVoiceRecognition(handler, button) {
         if (!SpeechRecognition) {
             alert('Speech recognition is not supported in your browser.');
             return;
         }
-        if (talkButton.classList.contains('recording')) {
+        if (button.classList.contains('recording')) {
             recognition.stop();
         } else {
+            currentVoiceHandler = handler;
             recognition.start();
         }
-    });
+    }
+
+    talkButton.addEventListener('click', () => startVoiceRecognition(handleFoodVoiceResult, talkButton));
+    calorieTalkButton.addEventListener('click', () => startVoiceRecognition(handleCalorieVoiceResult, calorieTalkButton));
 
     if (SpeechRecognition) {
         recognition.onstart = () => {
-            talkButton.classList.add('recording');
+            const button = currentVoiceHandler === handleFoodVoiceResult ? talkButton : calorieTalkButton;
+            button.classList.add('recording');
         };
 
         recognition.onend = () => {
-            talkButton.classList.remove('recording');
+            const button = currentVoiceHandler === handleFoodVoiceResult ? talkButton : calorieTalkButton;
+            button.classList.remove('recording');
+            currentVoiceHandler = null;
         };
 
         recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript;
-            handleVoiceResult(transcript);
+            if (currentVoiceHandler) {
+                currentVoiceHandler(transcript);
+            }
         };
 
         recognition.onerror = (event) => {
