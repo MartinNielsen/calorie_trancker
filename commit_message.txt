@@ -1,1 +1,1 @@
-Fix: Correct Gemini API endpoint URL
+Fix: Display microphone icon in calorie input button
