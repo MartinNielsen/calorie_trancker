@@ -173,7 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Speech recognition is not supported in your browser.');
             return;
         }
-        if (button.classList.contains('recording')) {
+
+        if (recognition.recognizing) {
             recognition.stop();
         } else {
             currentVoiceHandler = handler;
@@ -191,13 +192,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (SpeechRecognition) {
         recognition.onstart = () => {
-            const button = currentVoiceHandler === handleFoodVoiceResult ? talkButton : calorieTalkButton;
-            button.classList.add('recording');
+            talkButton.classList.add('recording');
         };
 
         recognition.onend = () => {
-            const button = currentVoiceHandler === handleFoodVoiceResult ? talkButton : calorieTalkButton;
-            button.classList.remove('recording');
+            talkButton.classList.remove('recording');
             currentVoiceHandler = null;
         };
 
