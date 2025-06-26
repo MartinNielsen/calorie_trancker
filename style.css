@@ -187,6 +187,11 @@ footer {
     padding: 0;
 }
 
+.mic-button svg {
+    width: 24px;
+    height: 24px;
+}
+
 .mic-button.recording {
     background-color: var(--danger-color);
 }
